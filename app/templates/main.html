@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Welcome to EasyVax{% endblock %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block content %}
+    <h1>Welcome to the EasyVax</h1>
+    <p>Register or Login Here</p>
+    <form name='registration-form' action='/register-doctor' method='post'>
+        <label>Name</label>
+        <input name="name" type="text" required>
+        <label>Email Address</label>
+        <input name="email-address" onfocusout="checkIfUserExists(event)" type="email" required>
+        <label>Phone Number</label>
+        <input name="phone-number" type="text" required>
+        <label>ID Number</label>
+        <input name="government-id" type="text" required>
+        <label>Password</label>
+        <input name="password" type="password" required>
+        <input type="submit">
+    </form>
+    <form name="login-form" action='/login-doctor' method='post'>
+        <label>Email Address</label>
+        <input name="email-address" type="email" required>
+        <label>Password</label>
+        <input name="password" type="password" required>
+        <input type="submit">
+    </form>
+    <script src="{{ url_for('static', filename='js/validate-users.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+{% endblock %}
+{% block footer %}
+No! Copyright 2021
+{% endblock %}

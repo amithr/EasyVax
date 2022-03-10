@@ -1,0 +1,25 @@
+<html>
+    <head>
+        {% block head %}
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+        <title>{% block title %}{% endblock %}</title>
+        {% endblock %}
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class="flashes">
+                {% for message in messages %}
+                    <li>{{message}}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        {% endwith %}
+    </head>
+    <body>
+        <div id="content">{% block content %}{% endblock %}</div>
+        <div id="footer">
+            {% block footer %}
+            Copyright 2020
+            {% endblock %}
+        </div>
+    </body>
+</html>
