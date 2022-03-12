@@ -1,9 +1,7 @@
 from app import db
 from flask import Blueprint, render_template, request, redirect, url_for, jsonify, session, flash
 from app.models import Doctor
-import os, smtplib, ssl
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
+from utilities.email import send_email
 
 doctor = Blueprint('doctor', __name__, url_prefix='/doctor')
 
@@ -14,22 +12,10 @@ def send_doctor_registration_email(doctor_id):
         return redirect(url_for('index'))
     doctor = Doctor.query.filter_by(id=doctor_id).first()
     if doctor:
-
-
-        smtp_server = "smtp.gmail.com"
-        port = 587
-        sender_email="boorsokkaimak@gmail.com"
-        password = "Sulochana2493!"
-
-        message = MIMEMultipart("alternative")
-        message["Subject"] = "EasyVax Confirmation Email"
-        message["From"] = sender_email
-        message["To"] = doctor.email
-
         confirmation_url = url_for('doctor.confirm_registration', doctor_id=doctor.id, _external=True)
 
         #HTML Message Part
-        html = "\
+        html_message = "\
         <html> \
         <body> \
             <p><b>Hello " + doctor.name + "</b>, \
@@ -41,21 +27,8 @@ def send_doctor_registration_email(doctor_id):
         </html> \
         "
 
-        message_text = MIMEText(html, "html")
-        message.attach(message_text)
-
-        context = ssl.create_default_context()
-
-        try:
-            server = smtplib.SMTP(smtp_server, port)
-            server.starttls(context=context)
-            server.login(sender_email, password)
-            server.sendmail(sender_email, doctor.email, message.as_string())
-        except Exception as e:
-            print(e)
-        finally:
-            server.quit()
-    return
+        send_email("Confirm EasyVax Registration", html_message, doctor.email)
+    return True
 
 @doctor.route('/register', methods=['POST'])
 def register():

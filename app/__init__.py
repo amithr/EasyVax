@@ -13,9 +13,9 @@ app.config.from_object('config')
 
 from app import views
 from app import models
-from app.doctor_blueprint import doctor
-from app.patient_blueprint import patient
-from app.vaccine_dose_blueprint import vaccine_dose
+from app.blueprints.doctor_blueprint import doctor
+from app.blueprints.patient_blueprint import patient
+from app.blueprints.vaccine_dose_blueprint import vaccine_dose
 
 
 app.register_blueprint(doctor)
