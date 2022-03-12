@@ -5,8 +5,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/patient.css') }}">
 {% endblock %}
 {% block content %}
-    <a href="{{ url_for('logout_doctor') }}">Logout</a>
-    <form name='patient-registration-form' action="{{ url_for('register_patient') }}" method='post'>
+    <a href="{{ url_for('doctor.logout') }}">Logout</a>
+    <form name='patient-registration-form' action="{{ url_for('patient.register') }}" method='post'>
         <label>Name</label>
         <input name="name" type="text" required>
         <label>Email Address</label>
@@ -18,7 +18,7 @@
     <div id="patient-list">
         <p>Patient Name</p><p>Patient Email</p><p>Phone Number</p><p>Update Vaccine Record</p><p>Email Vaccine Certificate</p>
         {% for patient in patients %}
-            <p>{{patient.name}}</p><p>{{patient.email}}</p><p>{{patient.phone_number}}</p><a href="{{ url_for('vaccine_record', patient_id=patient.id)}}">Update Vaccine Record</a><a href="{{url_for('generate_certificate', patient_id=patient.id)}}">Email Vaccine Certificate</a>
+            <p>{{patient.name}}</p><p>{{patient.email}}</p><p>{{patient.phone_number}}</p><a href="{{ url_for('vaccine_dose.display_records', patient_id=patient.id)}}">Update Vaccine Record</a><a href="{{url_for('patient.generate_certificate', patient_id=patient.id)}}">Email Vaccine Certificate</a>
         {% endfor %}
     </div>
 {% endblock %}
