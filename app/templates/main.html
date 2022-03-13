@@ -25,11 +25,8 @@
         <label>Password</label>
         <input name="password" type="password" required>
         <input type="submit">
-        <a href="">Forgot your password?</a>
+        <a href="{{url_for('doctor.initiate_password_change')}}">Forgot your password?</a>
     </form>
     <script src="{{ url_for('static', filename='js/validate-users.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-{% endblock %}
-{% block footer %}
-No! Copyright 2021
 {% endblock %}

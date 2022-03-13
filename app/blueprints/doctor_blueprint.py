@@ -32,8 +32,23 @@ def send_doctor_registration_email(doctor_id):
 
 @doctor.route('/register', methods=['POST'])
 def register():
-
     form = request.form
+
+    doctor = Doctor.query.filter_by(email=form['email-address']).first()
+    if doctor:
+        flash("Enter a unique email address.")
+        return redirect(url_for('index'))
+
+    doctor = Doctor.query.filter_by(email=form['phone-number']).first()
+    if doctor:
+        flash("Enter a unique phone number.")
+        return redirect(url_for('index'))
+
+    doctor = Doctor.query.filter_by(email=form['government-id']).first()
+    if doctor:
+        flash("Enter a unique phone government id.")
+        return redirect(url_for('index'))
+
     doctor = Doctor(
         name=form['name'],
         email=form['email-address'],
@@ -94,7 +109,55 @@ def confirm_registration(doctor_id):
         flash("Error confirming registration.")
     return redirect(url_for('index'))
 
-@doctor.route('/get-password-change-email', methods=['GET'])
+@doctor.route('/initiate-password-change', methods=['GET'])
+def initiate_password_change():
+    return render_template('forgot_your_password.html')
+
+
+def handle_sending_password_change_email(doctor):
+    password_change_url = url_for('doctor.display_change_password_form', doctor_id=doctor.id, _external=True)
+    html_message = "\
+        <html> \
+        <body> \
+            <p><b>Hello " + doctor.name + "</b>, \
+            <br/> \
+            Please click below to enter a new password.<br> \
+            Click <a href=" + password_change_url + ">here</a>.  \
+            </p> \
+        </body> \
+        </html> \
+        "
+    send_email("Password Change Request", html_message, doctor.email)
+    return
+
+@doctor.route('/send-password-change-email', methods=['POST'])
 def send_password_change_email():
-    pass
-    
+    form = request.form
+    doctor = Doctor.query.filter_by(email=form['email-address']).first()
+    if doctor:
+        handle_sending_password_change_email(doctor)
+        flash("An email has been sent with instructions on how to create a new password.")
+    else:
+        flash("A user with this email does not exist.")
+    return redirect(url_for('index'))
+
+@doctor.route('/change-password-form/<doctor_id>', methods=['GET'])
+def display_change_password_form(doctor_id):
+    return render_template('change_password.html', doctor_id=doctor_id)
+
+@doctor.route('/change-password/<doctor_id>', methods=['POST'])
+def change_password(doctor_id):
+    form = request.form
+    if not form['password'] == form['password']:
+        flash("Passwords do not match")
+        return redirect(url_for('index'))
+    if doctor_id:
+        doctor = Doctor.query.filter_by(id=doctor_id).first()
+        doctor.set_password(form['password'])
+        db.session.add(doctor)
+        db.session.commit()
+        flash("Passwords successfully changed, please login using new password.")
+    else:
+        flash("Invalid doctor ID.")
+    return redirect(url_for('index'))
+
