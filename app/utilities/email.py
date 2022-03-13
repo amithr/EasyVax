@@ -4,13 +4,16 @@ from email import encoders
 from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from dotenv import load_dotenv
 
 
 def send_email(subject, html_message, recipient_email, attachment_path=None):
     smtp_server = "smtp.gmail.com"
     port = 587
-    sender_email="boorsokkaimak@gmail.com"
-    password = "Sulochana2493!"
+    load_dotenv()
+
+    sender_email=os.getenv("EMAIL")
+    password = os.getenv("PASSWORD")
 
     message = MIMEMultipart("alternative")
     message["Subject"] = subject
