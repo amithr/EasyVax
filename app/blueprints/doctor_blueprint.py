@@ -1,7 +1,7 @@
 from app import db
 from flask import Blueprint, render_template, request, redirect, url_for, jsonify, session, flash
 from app.models import Doctor
-from utilities.email import send_email
+from app.utilities.email import send_email
 
 doctor = Blueprint('doctor', __name__, url_prefix='/doctor')
 
@@ -93,3 +93,8 @@ def confirm_registration(doctor_id):
     else:
         flash("Error confirming registration.")
     return redirect(url_for('index'))
+
+@doctor.route('/get-password-change-email', methods=['GET'])
+def send_password_change_email():
+    pass
+    

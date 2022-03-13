@@ -3,6 +3,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, sessio
 from app.models import Patient
 from fpdf import FPDF
 import qrcode, os
+from app.utilities.email import send_email
 
 patient = Blueprint('patient', __name__, url_prefix='/patient')
 
@@ -50,7 +51,6 @@ def generate_qr_code(verification_path, patient_id):
     return path
 
 
-
 def generate_pdf(patient):
     pdf = FPDF()
     pdf.add_page()
@@ -67,10 +67,24 @@ def generate_pdf(patient):
     img_path = generate_qr_code(verification_path, patient.id)
     pdf.cell(40, 10, "Scan QR code to verify:")
     pdf.image(img_path, x=50, y=100)
-    pdf.output('vaccine_passport.pdf', 'F')
+    pdf_path = 'vaccine_passport_' + str(patient.id) + '.pdf'
+    pdf.output(pdf_path, 'F')
+    return pdf_path
+
+def send_certificate(recipient_email, patient_name, attachment_path):
+    html_message = "\
+        <html> \
+        <body> \
+            <p><b>Hello " + patient_name + "</b>, \
+            <br/> \
+            Please click on the attachement below to download your vaccine passport.<br> \
+            </p> \
+        </body> \
+        </html> \
+        "
+    
+    send_email('Vaccine Certificate', html_message, recipient_email, attachment_path)
     return True
-
-
 
 @patient.route('/generate-certificate/<patient_id>', methods=['GET'])
 def generate_certificate(patient_id):
@@ -78,8 +92,9 @@ def generate_certificate(patient_id):
         return redirect(url_for('patient.display_patients'))
     patient = Patient.query.filter_by(id=patient_id).first()
     if patient:
-        generate_pdf(patient)
-        flash("Certificate generated")
+        pdf_path = generate_pdf(patient)
+        send_certificate(patient.email, patient.name, pdf_path)
+        flash("Certificate generated and sent.")
         return redirect(url_for('patient.display_patients'))
     else:
         flash("Error generating certificate")
