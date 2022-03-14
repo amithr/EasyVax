@@ -3,7 +3,7 @@ FROM tiangolo/uwsgi-nginx-flask:flask
 # copy over our requirements.txt file
 COPY requirements.txt /tmp/
 
-python -m pip install --upgrade pip
+RUN python3 -m pip install --upgrade pip
 
 # upgrade pip and install required python packages
 RUN pip install -U pip
