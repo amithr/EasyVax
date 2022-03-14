@@ -15,5 +15,4 @@ COPY ./app /app
 # which the app will use and display
 ENV MESSAGE "hello from Docker"
 
-ENTRYPOINT [ "python" ]
-CMD [ "run.py" ]
+CMD [ "python", "./test.py"]
