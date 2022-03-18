@@ -16,9 +16,10 @@
             {% if is_logged_in %}
                 <a id="logout-button" href="{{ url_for('doctor.logout') }}">Logout</a>
             {% else %}
-                <div id="header-menu-buttons">
-                    <a id="login-button" href="">Login</a>
-                    <a id="register-button" href="">Register</a>
+                <div id="header-menu-links">
+                    <p>About Us</p>
+                    <p>Plans and Pricing</p>
+                    <p>Contact Us</p>
                 </div>
             {% endif %}
         </div>

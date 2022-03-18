@@ -7,6 +7,7 @@
 {% block content %}
     <p>Welcome to EasyVax!</p>
     <form name='registration-form' action="{{url_for('doctor.register')}}" method='post'>
+        <h3>Register</h3>
         <label>Name</label>
         <input name="name" type="text" required>
         <label>Email Address</label>
@@ -17,14 +18,17 @@
         <input name="government-id" type="text" maxlength="6" required>
         <label>Password</label>
         <input name="password" type="password" required>
-        <input type="submit">
+        <input type="submit" value="Register">
     </form>
+    <br />
+    <br />
     <form name="login-form" action="{{url_for('doctor.login')}}" method='post'>
+        <h3>Login</h3>
         <label>Email Address</label>
         <input name="email-address" type="email" required>
         <label>Password</label>
         <input name="password" type="password" required>
-        <input type="submit">
+        <input type="submit" value="Log In">
         <a id="forgot-your-password" href="{{url_for('doctor.initiate_password_change')}}">Forgot your password?</a>
     </form>
     <script src="{{ url_for('static', filename='js/validate-users.js') }}"></script>
