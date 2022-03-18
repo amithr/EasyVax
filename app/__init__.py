@@ -10,7 +10,10 @@ load_dotenv()
 app = Flask(__name__, instance_relative_config=True)
 
 app.config["SECRET_KEY"] = '571ebf8e12ca209536c'
-app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv('DATABASE_URL')  or "postgresql://"+os.getenv("DB_USER") + ":" + os.getenv("DB_PASSWORD") + "@localhost/easyvax"
+db_uri = os.getenv('DATABASE_URL')  or "postgresql://"+os.getenv("DB_USER") + ":" + os.getenv("DB_PASSWORD") + "@localhost/easyvax"
+if db_uri and db_uri.startswith("postgres://"):
+    db_uri = db_uri.replace("postgres://", "postgresql://", 1)
+app.config["SQLALCHEMY_DATABASE_URI"] = db_uri
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
