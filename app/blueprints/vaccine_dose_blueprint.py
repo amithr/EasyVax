@@ -12,7 +12,7 @@ def display_records(patient_id):
     patient = Patient.query.filter_by(id=patient_id).first()
     if patient:
         vaccine_doses = Vaccine_Dose.query.filter_by(patient_id=patient_id)
-        return render_template('vaccine_record.html', vaccine_doses=vaccine_doses, patient_id=patient_id)
+        return render_template('vaccine_record.html', vaccine_doses=vaccine_doses, patient_id=patient_id, is_logged_in=True)
 
 @vaccine_dose.route('/add-vaccine-record/<patient_id>', methods=['POST', 'GET'])
 def add_record(patient_id):
@@ -21,11 +21,11 @@ def add_record(patient_id):
     dose_number = form['dose-number']
     vaccine_dose = Vaccine_Dose.query.filter_by(patient_id=patient_id, dose_no=dose_number).first()
     if vaccine_dose:
-        flash("This dose number has already been entered.")
+        flash("This dose number has already been entered.", category="error")
         return redirect(url_for('vaccine_dose.display_records', patient_id=patient_id))
     vaccine_dose = Vaccine_Dose.query.filter_by(dose_id=dose_id).first()
     if vaccine_dose:
-        flash("A dose with this serial number already exists in the database.")
+        flash("A dose with this serial number already exists in the database.", category="error")
         return redirect(url_for('vaccine_dose.display_records', patient_id=patient_id))
     vaccine_dose = Vaccine_Dose(
         type=form['type'],
@@ -36,7 +36,7 @@ def add_record(patient_id):
     )
     db.session.add(vaccine_dose)
     db.session.commit()
-    flash('Vaccine dose successfully added.')
+    flash("Vaccine dose successfully added.", category="success")
     return redirect(url_for('vaccine_dose.display_records', patient_id=patient_id))
 
 
@@ -44,6 +44,6 @@ def add_record(patient_id):
 def delete_record(patient_id, vaccine_id):
     Vaccine_Dose.query.filter_by(id=vaccine_id).delete()
     db.session.commit()
-    flash('Vaccine dose successfully deleted.')
+    flash("Vaccine dose successfully deleted.", category="success")
     return redirect(url_for('vaccine_dose.display_records', patient_id=patient_id))
 

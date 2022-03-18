@@ -1,7 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap');
+
+
+body {
+    font-family: 'Open Sans', sans-serif;
+}
+
+
 form {
+    font-family: 'Open Sans', sans-serif;
     display: grid;
-    grid-template-rows: repeat(4, 1fr);
+    grid-template-rows: repeat(5, 1fr);
     grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+    background-color: blueviolet;
+    border-radius: 5px;
+    text-align: center;
+    padding: 5px;
+    margin: 2%;
 }
 
 form > label {
@@ -10,9 +29,86 @@ form > label {
 
 form > input {
     grid-column: 3;
+    font-family: 'Open Sans', sans-serif;
 }
 
 form > input[type=submit] {
     grid-column: 2;
     width: 30%;
+    padding: 5px;
+}
+
+input[type=submit] {
+    border-style: none;
+}
+
+.header-menu {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.header-menu > h1 {
+    margin: 0;
+}
+
+.header-menu > h1 > a {
+    text-decoration: none;
+    font-weight: bold !important;
+    color: blueviolet !important;
+    background-color: white;
+}
+
+.header-menu > #logout-button {
+    justify-content: right;
+}
+
+
+#forgot-your-password {
+    color: black;
+    background-color: white;
+    padding: 0;
+    margin: 0;
+    text-align: left;
+    color: blueviolet
+}
+
+.success {
+    z-index: 99 !important;
+    position: absolute;
+    display: inline;
+    padding: 5px;
+    background-color: green;
+    color: white;
+    border-radius: 5px;
+    opacity: 0;
+    animation: fadeInOut 6s;
+}
+
+.error {
+    z-index: 99 !important;
+    position: absolute;
+    display: inline-block;
+    width: auto;
+    padding: 5px;
+    background-color: red;
+    color: white;
+    border-radius: 5px;
+    opacity: 0;
+    animation: fadeInOut 6s;
+}
+
+@keyframes fadeInOut {
+    0% {
+        opacity: 0;
+    }
+    16% {
+       opacity: 1;
+    }
+    84% {
+       opacity: 1;
+    }
+    100% {
+       opacity: 0;
+    }
 }

@@ -2,10 +2,9 @@
 {% block title %}Welcome to EasyVax{% endblock %}
 {% block head %}
     {{ super() }}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/patient.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/patients.css') }}">
 {% endblock %}
 {% block content %}
-    <a href="{{ url_for('doctor.logout') }}">Logout</a>
     <form name='patient-registration-form' action="{{ url_for('patient.register') }}" method='post'>
         <label>Name</label>
         <input name="name" type="text" required>

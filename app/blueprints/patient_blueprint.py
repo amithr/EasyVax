@@ -13,7 +13,7 @@ def display_patients():
     if session['doctor']:
         doctor_id = session['doctor']
         patients = Patient.query.filter_by(doctor_id=doctor_id)
-        return render_template('patients.html', patients=patients)
+        return render_template('patients.html', patients=patients, is_logged_in=True)
     return render_template('patients.html')
 
 @patient.route('/register', methods=['POST'])
@@ -30,10 +30,10 @@ def register():
         )
         db.session.add(patient)
         db.session.commit()
-        flash('Patient successfully registered')
+        flash("Patient successfully registered.", category="success")
         return redirect(url_for('patient.display_patients'))
     else:
-        flash('Patient already exists')
+        flash("Patient already exists.", category="error")
         return redirect(url_for('patient.display_patients'))
 
 def generate_qr_code(verification_path, patient_id):
@@ -94,10 +94,10 @@ def generate_certificate(patient_id):
     if patient:
         pdf_path = generate_pdf(patient)
         send_certificate(patient.email, patient.name, pdf_path)
-        flash("Certificate generated and sent.")
+        flash("Certificate generated and sent.", category="success")
         return redirect(url_for('patient.display_patients'))
     else:
-        flash("Error generating certificate")
+        flash("Error generating certificate", category="error")
         return redirect(url_for('patient.display_patients'))
 
 @patient.route('/verify-vaccination-status/<patient_id>', methods=['GET'])

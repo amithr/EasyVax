@@ -6,3 +6,7 @@
 #vaccine-dose-list > p {
     margin-top: 0
 }
+
+#return-patient-dashboard-button {
+    justify-self: right;
+}

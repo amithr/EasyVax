@@ -3,10 +3,9 @@
 {% block head %}
     {{ super() }}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/vaccine_dose.css') }}">
+    <a id="return-patient-dashboard-button" href="{{ url_for('index')}}">Back to Patient Dashboard</a>
 {% endblock %}
 {% block content %}
-    <a href="{{ url_for('doctor.logout') }}">Logout</a>
-    <a href="{{ url_for('index')}}">Back to Dashboard</a>
     <form name='vaccine-dose-registration-form' action="{{ url_for('vaccine_dose.add_record', patient_id=patient_id) }}" method='post'>
         <label>Type</label>
         <input list="vaccine-types" name="type" required>
@@ -22,7 +21,7 @@
         <label>Dose Number</label>
         <input name="dose-number" type="number" required>
         <label>Dose ID</label>
-        <input name="dose-id" type="text" required>
+        <input name="dose-id" type="text" maxlength="6" required>
         <input type="submit" />
     </form>
     <div id="vaccine-dose-list">
