@@ -1,7 +1,7 @@
 from app import db
 from flask import Blueprint, render_template, request, redirect, url_for, jsonify, session, flash
 from app.models import Doctor
-from app.utilities.email import send_email
+from app.utilities.emails import send_email
 
 doctor = Blueprint('doctor', __name__, url_prefix='/doctor')
 

@@ -3,7 +3,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, sessio
 from app.models import Patient
 from fpdf import FPDF
 import qrcode, os
-from app.utilities.email import send_email
+from app.utilities.emails import send_email
 
 patient = Blueprint('patient', __name__, url_prefix='/patient')
 
